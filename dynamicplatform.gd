@@ -6,24 +6,24 @@ export(Resource) var style = null
 onready var path = $Path2D
 
 #determines wheter the curve is closed or not when it is it draws a filltexture and sets the end and start points to the same position
-export var closed:bool = true
+export var closed:bool = true setget setClosed
 #determines the thickness of the border
-export var thicknes:float = 30
+export var thicknes:float = 30 setget setThicknes
 #this draws red dots or red vertex at points of bad polygons that normally have been fixed
-export var mark_bad:bool = true
+export var mark_bad:bool = true setget setMarkBad
 
 #determines what method of fixing bad polygons is used 
 #quad switch is the older method and just switches the 2 points
 #the other method uses normals to set the points at a median point offset by their normals by a small margin
-export var quad_switch:bool = false
+export var quad_switch:bool = false setget setQuadSwitch
 
 #determines edge draw method the older method draws full textures and is way less heavy to draw but much worse and not supported
 #the new method segments the texture based on the bake interval of the curve
-export var segmented:bool = true
+export var segmented:bool = true #this should be a dictionary or similar with different options especially if more draw options become available
 #determines if corners are drawn this is not always desired
-export var drawcorners:bool = true
+export var drawcorners:bool = true setget setDrawCorners
 #determines between which angles a corner will be drawn
-export var angle_treshold = Vector2(30,120)
+export var angle_treshold = Vector2(30,120) setget setAngleThreshold
 
 class_name dynamicplatform
 
@@ -114,7 +114,6 @@ func drawBorderPoly(var offset):
 	colors.push_back(Color(1,1,1))
 	
 	polygon = fixQuad(polygon,  colors)
-	print("draw border unsegmented")
 	draw_polygon(polygon,colors, uvs,texture)
 	
 	drawBorderPoly(offset+texture.get_width()*factor)
@@ -122,7 +121,6 @@ func drawBorderPoly(var offset):
 func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 	if (quad[2].y -quad[1].y)*(quad[3].x-quad[2].x)-(quad[3].y-quad[2].y)*(quad[2].x-quad[1].x) < 0:
 		if (quad[1].y -quad[0].y)*(quad[2].x-quad[1].x)-(quad[2].y-quad[1].y)*(quad[1].x-quad[0].x) > 0:
-			print("fixing quad first 2 points")
 			#quad switch method
 			if quad_switch:
 				var temp = quad[0]
@@ -139,7 +137,6 @@ func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 				drawPoint(quad[0],Color.red)
 				drawPoint(quad[1],Color.red)
 	else:
-		print("fixing quad last 2 points")
 		if quad_switch:
 			var temp = quad[3]
 			quad[3] = quad[2]
@@ -166,7 +163,7 @@ func drawBorderSegmentedPoly():
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
-	print("draw normal poly seg")
+	
 	for i in range(baked_points.size()-1):
 		var normal
 		if i == 0:
@@ -208,7 +205,6 @@ func drawBorderSegmentedPoly():
 		uv_remember_spot += increase
 	#draw extra quad to join ends
 	if closed:
-		print("draw tje closing poly")
 		var normal
 		normal = baked_points[1] - baked_points[baked_points.size()-2]
 		normal = Vector2(-normal.y,normal.x).normalized()
@@ -243,7 +239,6 @@ func drawBorderSegmentedPoly():
 		quad = fixQuad(quad, colors)
 		
 		draw_polygon(quad,colors,uv,texture)
-		print("drawn last poly closing")
 		
 
 func drawBorderSegmentedMesh():
@@ -385,11 +380,9 @@ func drawCorners():
 			colors.push_back(Color.white)
 			colors.push_back(Color.white)
 			
-			print("draw corner")
 			#only draw when theres a texture
 			if tex != null:
 				draw_polygon(points,colors,uvs,tex)
-			print("draw corner2")
 
 func drawBorder():
 	if !segmented:
@@ -414,4 +407,28 @@ func _draw():
 		path.curve.set_point_position(path.curve.get_point_count()-1, path.curve.get_point_position(0))
 	drawFill()
 	drawBorder()
+
+#setters and getters with update
+func setDrawCorners(var value):
+	drawcorners = value
+	update()
 	
+func setAngleThreshold(value):
+	angle_treshold = value
+	update()
+
+func setQuadSwitch(value):
+	quad_switch = value
+	update()
+
+func setClosed(value):
+	closed = value
+	update()
+
+func setThicknes(value):
+	thicknes = value
+	update()
+	
+func setMarkBad(value):
+	mark_bad = value
+	update()
