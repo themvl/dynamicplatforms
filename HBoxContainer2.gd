@@ -17,7 +17,7 @@ func setTexture(var tex:Texture):
 		textureRect.texture = tex
 	else:
 		#set to default raster tex
-		textureRect.texture = load("res://raster_back.png")
+		textureRect.texture = load("res://addons/dynamicplatforms/textures-icons/raster_back.png")
 	
 
 func _on_FileDialog_file_selected(path):

@@ -3,7 +3,7 @@
 [ext_resource path="res://addons/dynamicplatforms/styleboxdynamicplatforms.tres" type="StyleBox" id=1]
 [ext_resource path="res://addons/dynamicplatforms/textureselector.gd" type="Script" id=2]
 [ext_resource path="res://addons/dynamicplatforms/HBoxContainer2.gd" type="Script" id=3]
-[ext_resource path="res://addons/dynamicplatforms/raster_back.png" type="Texture" id=4]
+[ext_resource path="res://addons/dynamicplatforms/textures-icons/raster_back.png" type="Texture" id=4]
 
 [node name="textureselector" type="PanelContainer"]
 margin_top = 18.0
