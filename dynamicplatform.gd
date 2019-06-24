@@ -324,8 +324,12 @@ func drawCorners():
 			
 			var uvs = PoolVector2Array()
 			
-			var cornerstickout = 60/angle
-			points.push_back((point+normal*thicknes*cornerstickout))
+			#calculate the length towards the corner point and multiply by normal to get coordinate
+			var l = normal*(thicknes/2)/sin(deg2rad((angle/2)))
+			points.push_back(point+l)
+			
+#			var cornerstickout = 60/angle
+#			points.push_back((point+normal*thicknes*cornerstickout))
 			if normal.x > 0:
 				if normal.y > 0:
 					tex = style.rightBottomOuterCorner
@@ -366,9 +370,8 @@ func drawCorners():
 			drawPoint(p, Color.red)
 			points.push_back(p)
 			
+			points.push_back(point-l)
 			
-			points.push_back(point-normal*thicknes*cornerstickout-normal*5)
-
 			p = point+vector2*thicknes/2
 			p = curve.interpolate_baked(curve.get_closest_offset(p))
 			p_normal = curve.interpolate_baked(curve.get_closest_offset(p)+thicknes/4)-curve.interpolate_baked(curve.get_closest_offset(p)-thicknes/4)
