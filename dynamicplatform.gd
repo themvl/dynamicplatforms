@@ -57,18 +57,16 @@ func _process(delta):
 		if !path.curve.is_connected("changed",self, "update"):
 			path.curve.connect("changed",self, "update")
 	resetpath()
-	
-	#this sets the end point and start point to the same position when the curve is set to closed this still allows moving the points together
-	if closed and  path.curve.get_point_count() > 3 and path.curve.get_point_position(0) != path.curve.get_point_position(path.curve.get_point_count()-1):
-		path.curve.set_point_position(path.curve.get_point_count()-1, path.curve.get_point_position(0))
 
 func drawFill():
 	#dont fill when theres less than 3 points or when closed is not enabled
 	if path.curve.get_point_count() < 3 or !closed or style.fillTexture == null:
 		return
 	
+	#determine the scale at which to draw the fill texture
 	var scale = style.fillsize/style.fillTexture.get_width() 
 	var uvs = PoolVector2Array()
+	#set an uv for every baked point
 	for p in path.curve.get_baked_points():
 		uvs.append(p*scale)
 	draw_colored_polygon(path.curve.get_baked_points(),Color(1,1,1), uvs, style.fillTexture)
@@ -115,6 +113,8 @@ func drawBorderPoly(var offset):
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
 	
+	polygon = fixQuad(polygon,  colors)
+	print("draw border unsegmented")
 	draw_polygon(polygon,colors, uvs,texture)
 	
 	drawBorderPoly(offset+texture.get_width()*factor)
@@ -122,6 +122,7 @@ func drawBorderPoly(var offset):
 func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 	if (quad[2].y -quad[1].y)*(quad[3].x-quad[2].x)-(quad[3].y-quad[2].y)*(quad[2].x-quad[1].x) < 0:
 		if (quad[1].y -quad[0].y)*(quad[2].x-quad[1].x)-(quad[2].y-quad[1].y)*(quad[1].x-quad[0].x) > 0:
+			print("fixing quad first 2 points")
 			#quad switch method
 			if quad_switch:
 				var temp = quad[0]
@@ -138,6 +139,7 @@ func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 				drawPoint(quad[0],Color.red)
 				drawPoint(quad[1],Color.red)
 	else:
+		print("fixing quad last 2 points")
 		if quad_switch:
 			var temp = quad[3]
 			quad[3] = quad[2]
@@ -164,7 +166,7 @@ func drawBorderSegmentedPoly():
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
-	
+	print("draw normal poly seg")
 	for i in range(baked_points.size()-1):
 		var normal
 		if i == 0:
@@ -206,6 +208,7 @@ func drawBorderSegmentedPoly():
 		uv_remember_spot += increase
 	#draw extra quad to join ends
 	if closed:
+		print("draw tje closing poly")
 		var normal
 		normal = baked_points[1] - baked_points[baked_points.size()-2]
 		normal = Vector2(-normal.y,normal.x).normalized()
@@ -223,6 +226,11 @@ func drawBorderSegmentedPoly():
 		quad.push_back(baked_points[baked_points.size()-1]+normal*(1-style.getOffset(rangeid))*thicknes)
 		quad.push_back(baked_points[0]+normal2*(1-style.getOffset(rangeid))*thicknes)
 		
+		drawPoint(quad[0], Color.red)
+		drawPoint(quad[1], Color.blue)
+		drawPoint(quad[2], Color.green)
+		drawPoint(quad[3], Color.yellow)
+		
 		uv_remember_spot = wrapf(uv_remember_spot,0,1)
 		var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
 		
@@ -235,6 +243,7 @@ func drawBorderSegmentedPoly():
 		quad = fixQuad(quad, colors)
 		
 		draw_polygon(quad,colors,uv,texture)
+		print("drawn last poly closing")
 		
 
 func drawBorderSegmentedMesh():
@@ -376,9 +385,11 @@ func drawCorners():
 			colors.push_back(Color.white)
 			colors.push_back(Color.white)
 			
+			print("draw corner")
 			#only draw when theres a texture
 			if tex != null:
 				draw_polygon(points,colors,uvs,tex)
+			print("draw corner2")
 
 func drawBorder():
 	if !segmented:
@@ -398,6 +409,9 @@ func drawBorderSegmentedCurve():
 #	curve_inner.transform = curve_inner.transform.scaled(0.5)
 	
 func _draw():
+	#this sets the end point and start point to the same position when the curve is set to closed this still allows moving the points together
+	if closed and  path.curve.get_point_count() > 3 and path.curve.get_point_position(0) != path.curve.get_point_position(path.curve.get_point_count()-1):
+		path.curve.set_point_position(path.curve.get_point_count()-1, path.curve.get_point_position(0))
 	drawFill()
 	drawBorder()
 	
