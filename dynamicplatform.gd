@@ -131,7 +131,7 @@ func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 				var offset = (quad[0]-quad[1]).normalized()/thicknes
 				quad[0] = middle-offset
 				quad[1] = middle+offset
-			if mark_bad:
+			if mark_bad and Engine.is_editor_hint():
 				colors[0] = Color.red
 				colors[1] = Color.red
 				drawPoint(quad[0],Color.red)
@@ -146,7 +146,7 @@ func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 			var offset = (quad[3]-quad[2]).normalized()/thicknes
 			quad[2] = middle+offset
 			quad[3] = middle-offset
-		if mark_bad:
+		if mark_bad and Engine.is_editor_hint():
 			colors[2] = Color.red
 			colors[3] = Color.red
 			drawPoint(quad[2],Color.red)
@@ -221,11 +221,6 @@ func drawBorderSegmentedPoly():
 		quad.push_back(baked_points[baked_points.size()-1]-normal*style.getOffset(rangeid)*thicknes)
 		quad.push_back(baked_points[baked_points.size()-1]+normal*(1-style.getOffset(rangeid))*thicknes)
 		quad.push_back(baked_points[0]+normal2*(1-style.getOffset(rangeid))*thicknes)
-		
-		drawPoint(quad[0], Color.red)
-		drawPoint(quad[1], Color.blue)
-		drawPoint(quad[2], Color.green)
-		drawPoint(quad[3], Color.yellow)
 		
 		uv_remember_spot = wrapf(uv_remember_spot,0,1)
 		var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
@@ -360,7 +355,6 @@ func drawCorners():
 			var p_normal = curve.interpolate_baked(curve.get_closest_offset(p)+thicknes/4)-curve.interpolate_baked(curve.get_closest_offset(p)-thicknes/4)
 			p_normal = Vector2(p_normal.y, -p_normal.x)
 			p = p+p_normal
-			drawPoint(p, Color.red)
 			points.push_back(p)
 			
 			points.push_back(point-l)
@@ -370,7 +364,6 @@ func drawCorners():
 			p_normal = curve.interpolate_baked(curve.get_closest_offset(p)+thicknes/4)-curve.interpolate_baked(curve.get_closest_offset(p)-thicknes/4)
 			p_normal = Vector2(p_normal.y, -p_normal.x)
 			p = p+p_normal
-			drawPoint(p, Color.red)
 			points.push_back(p)
 			
 			#just assign white for the texture
