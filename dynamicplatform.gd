@@ -25,6 +25,11 @@ export var drawcorners:bool = true setget setDrawCorners
 #determines between which angles a corner will be drawn
 export var angle_treshold = Vector2(30,120) setget setAngleThreshold
 
+var corner_quads = []
+var corner_uvs = []
+export var corner_ranges = []
+var corner_tex = []
+
 class_name dynamicplatform
 
 func _enter_tree():
@@ -153,6 +158,34 @@ func fixQuad(var quad:PoolVector2Array, var colors) -> PoolVector2Array:
 			drawPoint(quad[3],Color.red)
 	return quad
 
+func offsetInCornerRange(var offset, var cornerrange )->bool:
+	if cornerrange == 0:
+		if offset < corner_ranges[cornerrange].x or offset > corner_ranges[cornerrange].y:
+			return true
+	elif offset < corner_ranges[cornerrange].x and offset > corner_ranges[cornerrange].y:
+		return true
+	return false
+		
+func fixQuadForCorners(var offset1, var offset2, var quad):
+	for i in range(corner_ranges.size()):
+		if offsetInCornerRange(offset1,i):
+			if offsetInCornerRange(offset2,i):
+				return null
+			else:
+				drawPoint(corner_quads[i][2], Color.red)
+				drawPoint(corner_quads[i][3], Color.red)
+				quad[0] = corner_quads[i][3]
+				quad[3] = corner_quads[i][2]
+				return quad
+		else:
+			if offsetInCornerRange(offset2,i):
+				drawPoint(corner_quads[i][1], Color.yellow)
+				drawPoint(corner_quads[i][2], Color.yellow)
+				quad[1] = corner_quads[i][1]
+				quad[2] = corner_quads[i][2]
+				return quad
+	return quad
+
 func drawBorderSegmentedPoly():
 	#loop over baked points and add quad for all
 	var baked_points = path.curve.get_baked_points()
@@ -163,7 +196,8 @@ func drawBorderSegmentedPoly():
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
 	colors.push_back(Color(1,1,1))
-	
+	#variable that holds the quad to be drawn put here so it can be used to draw the closing rect for the corners
+	var quad
 	for i in range(baked_points.size()-1):
 		var normal
 		if i == 0:
@@ -183,11 +217,13 @@ func drawBorderSegmentedPoly():
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 		var texture = style.getTexture(rangeid,0)
 		
-		var quad = PoolVector2Array()
+		quad = PoolVector2Array()
 		quad.push_back(baked_points[i]-normal*style.getOffset(rangeid)*thicknes)
 		quad.push_back(baked_points[i+1]-normal2*style.getOffset(rangeid)*thicknes)
 		quad.push_back(baked_points[i+1]+normal2*(1-style.getOffset(rangeid))*thicknes)
 		quad.push_back(baked_points[i]+normal*(1-style.getOffset(rangeid))*thicknes)
+		
+		quad = fixQuadForCorners(path.curve.get_closest_offset(baked_points[i]),path.curve.get_closest_offset(baked_points[i+1]),quad)
 		
 		uv_remember_spot = wrapf(uv_remember_spot,0,1)
 		var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
@@ -199,12 +235,15 @@ func drawBorderSegmentedPoly():
 		uv.push_back(Vector2(uv_remember_spot,0.99))
 		
 		#make bad polygons gud polygons like a doggy
-		quad = fixQuad(quad, colors)
+		if quad != null:
+			quad = fixQuad(quad, colors)
 		
-		draw_polygon(quad,colors,uv,texture)
+		if !(drawcorners and quad == null):
+			draw_polygon(quad,colors,uv,texture)
 		uv_remember_spot += increase
+			
 	#draw extra quad to join ends
-	if closed:
+	if closed and !offsetInCornerRange(0,0):
 		var normal
 		normal = baked_points[1] - baked_points[baked_points.size()-2]
 		normal = Vector2(-normal.y,normal.x).normalized()
@@ -216,7 +255,7 @@ func drawBorderSegmentedPoly():
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 		var texture = style.getTexture(rangeid,0)
 		
-		var quad = PoolVector2Array()
+		quad = PoolVector2Array()
 		quad.push_back(baked_points[0]-normal2*style.getOffset(rangeid)*thicknes)
 		quad.push_back(baked_points[baked_points.size()-1]-normal*style.getOffset(rangeid)*thicknes)
 		quad.push_back(baked_points[baked_points.size()-1]+normal*(1-style.getOffset(rangeid))*thicknes)
@@ -266,8 +305,15 @@ func drawBorderSegmentedMesh():
 		
 		uv_remember_spot += increase
 		
-
-func drawCorners():
+#function determines corners beforehand and stores them in the corner_quads and corner_uvs variables to use draw later 
+#and to skip when drawing border the ranges to skip are stored in corner_ranges variable
+func determineCorners():
+	#clear from previous draw
+	corner_quads.clear()
+	corner_ranges.clear()
+	corner_uvs.clear()
+	corner_tex.clear()
+	
 	for i in range(path.curve.get_point_count()-1):
 		var angle
 		var curve = path.curve
@@ -297,6 +343,9 @@ func drawCorners():
 		
 		#determine if its a angle based on angle treshhold
 		if angle <=angle_treshold.y and angle!=0 and angle >= angle_treshold.x:
+			#variable storing the range of offsets the corner covers used to not draw the border there
+			var cornerrange = Vector2(0,0)
+			
 			#in editor draw a blue dot signifying it is reconised as a corner used for when a texture is missing
 			#when there is a texture it is obscured
 			if Engine.is_editor_hint():
@@ -351,8 +400,9 @@ func drawCorners():
 			#calculate corner point depending on normal of earlier or further point 
 			#this is done in a way that closed end points still work
 			var p = point+vector1*thicknes/2
-			p = curve.interpolate_baked(curve.get_closest_offset(p))
-			var p_normal = curve.interpolate_baked(curve.get_closest_offset(p)+thicknes/4)-curve.interpolate_baked(curve.get_closest_offset(p)-thicknes/4)
+			cornerrange.y = curve.get_closest_offset(p)
+			p = curve.interpolate_baked(cornerrange.y)
+			var p_normal = curve.interpolate_baked(cornerrange.y+thicknes/4)-curve.interpolate_baked(cornerrange.y-thicknes/4)
 			p_normal = Vector2(p_normal.y, -p_normal.x)
 			p = p+p_normal
 			points.push_back(p)
@@ -360,24 +410,39 @@ func drawCorners():
 			points.push_back(point-l)
 			
 			p = point+vector2*thicknes/2
-			p = curve.interpolate_baked(curve.get_closest_offset(p))
-			p_normal = curve.interpolate_baked(curve.get_closest_offset(p)+thicknes/4)-curve.interpolate_baked(curve.get_closest_offset(p)-thicknes/4)
+			cornerrange.x = curve.get_closest_offset(p)
+			p = curve.interpolate_baked(cornerrange.x)
+			p_normal = curve.interpolate_baked(cornerrange.x+thicknes/4)-curve.interpolate_baked(cornerrange.x-thicknes/4)
 			p_normal = Vector2(p_normal.y, -p_normal.x)
 			p = p+p_normal
 			points.push_back(p)
 			
-			#just assign white for the texture
-			var colors = PoolColorArray()
-			colors.push_back(Color.white)
-			colors.push_back(Color.white)
-			colors.push_back(Color.white)
-			colors.push_back(Color.white)
-			
-			#only draw when theres a texture
-			if tex != null:
-				draw_polygon(points,colors,uvs,tex)
+			#put the quads and uvs in the global variables
+			corner_quads.push_back(points)
+			corner_uvs.push_back(uvs)
+			corner_tex.push_back(tex)
+			corner_ranges.push_back(cornerrange)
+
+
+func drawCorners():
+	#just assign white for the texture
+	var colors = PoolColorArray()
+	colors.push_back(Color.white)
+	colors.push_back(Color.white)
+	colors.push_back(Color.white)
+	colors.push_back(Color.white)
+		
+	for i in range(corner_quads.size()):
+		var tex = corner_tex[i]
+		
+		#only draw when theres a texture
+		if tex != null:
+			draw_polygon(corner_quads[i],colors,corner_uvs[i],tex)
 
 func drawBorder():
+	if drawcorners:
+		determineCorners()
+	
 	if !segmented:
 		drawBorderPoly(0)
 	else:
