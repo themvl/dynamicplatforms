@@ -1,0 +1,234 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/StyleEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/radiusrange.gd" type="Script" id=2]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/VBoxContainer.gd" type="Script" id=3]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/textureselector.tscn" type="PackedScene" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 8.0
+content_margin_right = 8.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color( 0.34902, 0.333333, 0.482353, 0.301961 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.121569, 0.145098, 0.192157, 1 )
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 10
+
+[node name="Style Editor" type="ScrollContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 308.0
+margin_bottom = 1011.0
+
+[node name="StyleEditor" type="PanelContainer" parent="."]
+margin_right = 301.0
+margin_bottom = 1004.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StyleEditor"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 294.0
+margin_bottom = 997.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="newandopen" type="HBoxContainer" parent="StyleEditor/VBoxContainer"]
+margin_right = 287.0
+margin_bottom = 20.0
+
+[node name="style" type="Label" parent="StyleEditor/VBoxContainer/newandopen"]
+margin_top = 3.0
+margin_right = 39.0
+margin_bottom = 17.0
+text = "Style: "
+
+[node name="new" type="Button" parent="StyleEditor/VBoxContainer/newandopen"]
+margin_left = 43.0
+margin_right = 83.0
+margin_bottom = 20.0
+text = "New"
+
+[node name="open" type="Button" parent="StyleEditor/VBoxContainer/newandopen"]
+margin_left = 87.0
+margin_right = 134.0
+margin_bottom = 20.0
+text = "Open"
+
+[node name="save" type="Button" parent="StyleEditor/VBoxContainer/newandopen"]
+visible = false
+margin_left = 138.0
+margin_right = 179.0
+margin_bottom = 20.0
+text = "save"
+
+[node name="editor" type="VBoxContainer" parent="StyleEditor/VBoxContainer"]
+visible = false
+margin_top = 24.0
+margin_right = 287.0
+margin_bottom = 708.0
+
+[node name="Anglerangeslabel" type="Label" parent="StyleEditor/VBoxContainer/editor"]
+margin_right = 287.0
+margin_bottom = 14.0
+text = "Angle ranges"
+
+[node name="Anglerangeselector" type="Control" parent="StyleEditor/VBoxContainer/editor"]
+margin_top = 18.0
+margin_right = 287.0
+margin_bottom = 332.0
+rect_min_size = Vector2( 0, 314 )
+script = ExtResource( 2 )
+
+[node name="selectedangle" type="Label" parent="StyleEditor/VBoxContainer/editor/Anglerangeselector"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="createrange" type="Button" parent="StyleEditor/VBoxContainer/editor"]
+margin_top = 336.0
+margin_right = 287.0
+margin_bottom = 356.0
+text = "create new range"
+
+[node name="anglerangesettings" type="PanelContainer" parent="StyleEditor/VBoxContainer/editor"]
+margin_top = 360.0
+margin_right = 287.0
+margin_bottom = 502.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StyleEditor/VBoxContainer/editor/anglerangesettings"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 279.0
+margin_bottom = 134.0
+
+[node name="range" type="Label" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer"]
+margin_right = 271.0
+margin_bottom = 14.0
+text = "Angle range settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer"]
+editor/display_folded = true
+margin_top = 18.0
+margin_right = 271.0
+margin_bottom = 42.0
+
+[node name="start" type="Label" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 29.0
+margin_bottom = 19.0
+text = "Start"
+
+[node name="SpinBox" type="SpinBox" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer"]
+margin_left = 33.0
+margin_right = 107.0
+margin_bottom = 24.0
+min_value = -360.0
+max_value = 360.0
+suffix = " deg"
+
+[node name="end" type="Label" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer"]
+margin_left = 111.0
+margin_top = 5.0
+margin_right = 134.0
+margin_bottom = 19.0
+text = "End"
+
+[node name="SpinBox2" type="SpinBox" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer"]
+margin_left = 138.0
+margin_right = 212.0
+margin_bottom = 24.0
+min_value = -360.0
+max_value = 360.0
+suffix = " deg"
+
+[node name="delete" type="Button" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer"]
+margin_top = 46.0
+margin_right = 271.0
+margin_bottom = 66.0
+text = "Delete range"
+
+[node name="PanelContainer2" type="PanelContainer" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer"]
+margin_top = 70.0
+margin_right = 271.0
+margin_bottom = 126.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 264.0
+margin_bottom = 49.0
+script = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_right = 257.0
+margin_bottom = 14.0
+text = "Textures:"
+
+[node name="textureselectors" type="VBoxContainer" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_top = 18.0
+margin_right = 257.0
+margin_bottom = 18.0
+
+[node name="Button" type="Button" parent="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_top = 22.0
+margin_right = 257.0
+margin_bottom = 42.0
+text = "Add texture"
+
+[node name="Fillsettings" type="PanelContainer" parent="StyleEditor/VBoxContainer/editor"]
+margin_top = 506.0
+margin_right = 287.0
+margin_bottom = 684.0
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StyleEditor/VBoxContainer/editor/Fillsettings"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 279.0
+margin_bottom = 170.0
+
+[node name="Label" type="Label" parent="StyleEditor/VBoxContainer/editor/Fillsettings/VBoxContainer"]
+margin_right = 271.0
+margin_bottom = 14.0
+text = "Fill settings"
+
+[node name="textureselector" parent="StyleEditor/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 4 )]
+margin_right = 271.0
+
+[node name="FileDialogNewStyle" type="FileDialog" parent="StyleEditor"]
+margin_left = -16.0
+margin_top = -14.0
+margin_right = 259.0
+margin_bottom = 116.0
+
+[node name="FileDialogLoadStyle" type="FileDialog" parent="StyleEditor"]
+margin_right = 275.0
+margin_bottom = 130.0
+window_title = "Open a File"
+mode = 0
+[connection signal="pressed" from="StyleEditor/VBoxContainer/newandopen/new" to="StyleEditor/FileDialogNewStyle" method="popup_centered" binds= [ Vector2( 300, 300 ) ]]
+[connection signal="pressed" from="StyleEditor/VBoxContainer/newandopen/open" to="StyleEditor/FileDialogLoadStyle" method="popup_centered" binds= [ Vector2( 300, 300 ) ]]
+[connection signal="pressed" from="StyleEditor/VBoxContainer/newandopen/save" to="StyleEditor" method="_on_save_pressed"]
+[connection signal="pressed" from="StyleEditor/VBoxContainer/editor/createrange" to="StyleEditor/VBoxContainer/editor/Anglerangeselector" method="create_new_range"]
+[connection signal="value_changed" from="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer/SpinBox" to="StyleEditor/VBoxContainer/editor/Anglerangeselector" method="_on_SpinBox_value_changed" binds= [ false ]]
+[connection signal="value_changed" from="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer/SpinBox2" to="StyleEditor/VBoxContainer/editor/Anglerangeselector" method="_on_SpinBox2_value_changed"]
+[connection signal="pressed" from="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/delete" to="StyleEditor/VBoxContainer/editor/Anglerangeselector" method="deleteactiverange"]
+[connection signal="pressed" from="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer/Button" to="StyleEditor/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer" method="_on_Button_pressed"]
+[connection signal="textureOpened" from="StyleEditor/VBoxContainer/editor/Fillsettings/VBoxContainer/textureselector" to="StyleEditor/VBoxContainer/editor/Anglerangeselector" method="_on_textureselector_textureOpened"]
+[connection signal="textureRemoved" from="StyleEditor/VBoxContainer/editor/Fillsettings/VBoxContainer/textureselector" to="StyleEditor/VBoxContainer/editor/Anglerangeselector" method="_on_textureselector_textureRemoved"]
+[connection signal="file_selected" from="StyleEditor/FileDialogNewStyle" to="StyleEditor" method="_on_FileDialogNewStyle_file_selected"]
+[connection signal="file_selected" from="StyleEditor/FileDialogLoadStyle" to="StyleEditor" method="_on_FileDialogLoadStyle_file_selected"]
