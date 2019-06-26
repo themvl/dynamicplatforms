@@ -23,11 +23,6 @@ func _ready():
 func _enter_tree():
 	pass
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
 func convertangle(angle:int):
 	if angle >=360:
 		if angle -360 >= 360:
@@ -41,18 +36,6 @@ func convertangle(angle:int):
 			return angle+360
 	else:
 		return angle
-#
-#func draw_anglepoint(angle:int):
-#	print("draw line")
-#	#convert to standard degrees
-#	angle = convertangle(angle)
-#	var topoint = Vector2(0,0)
-#
-#	if(angle/90 <= 1):
-#		topoint.x = sin(angle)*pivot.x-5
-#		topoint.y = cos(angle)*pivot.x-5
-#
-#	draw_line(pivot, topoint, Color.black, 2)
 #
 func _gui_input(event):
 	if style == null:
@@ -236,7 +219,7 @@ func setStyle(var s):
 		anglerange.push_back(Vector2(ran.x,ran.y))
 	
 	#set the fill texture 
-	$"../Fillsettings/VBoxContainer/textureselector/HBoxContainer2".setTexture(style.fillTexture)
+	$"../Fillsettings/VBoxContainer/textureselector".setTexture(style.fillTexture)
 	
 	update()
 	
