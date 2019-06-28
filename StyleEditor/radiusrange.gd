@@ -304,10 +304,10 @@ func setStyle(var s):
 func changeRangeValue(var ranid:int, var begorend:int, var newValue:int):
 	if begorend == 0:
 		anglerange[ranid].x = newValue
-		style.angleranges[ranid].x = newValue
+		style.changeAngleRange(ranid, newValue,style.angleranges[ranid].y)
 	else:
 		anglerange[ranid].y = newValue
-		style.angleranges[ranid].y = newValue
+		style.changeAngleRange(ranid, style.angleranges[ranid].x,newValue)
 	
 	update()
 

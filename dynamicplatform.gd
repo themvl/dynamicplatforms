@@ -2,7 +2,7 @@ tool
 extends Node2D
 
 const style_script = preload("dynamicplatformstyle.gd")
-export(Resource) var style = null
+export(Resource) var style = null setget setStyle
 onready var path = $Path2D
 
 #determines wheter the curve is closed or not when it is it draws a filltexture and sets the end and start points to the same position
@@ -170,6 +170,7 @@ func fixQuadForCorners(var offset1, var offset2, var quad):
 	for i in range(corner_ranges.size()):
 		if offsetInCornerRange(offset1,i):
 			if offsetInCornerRange(offset2,i):
+				print("offset in corner range:")
 				return null
 			else:
 				drawPoint(corner_quads[i][2], Color.red)
@@ -223,7 +224,8 @@ func drawBorderSegmentedPoly():
 		quad.push_back(baked_points[i+1]+normal2*(1-style.getOffset(rangeid))*thicknes)
 		quad.push_back(baked_points[i]+normal*(1-style.getOffset(rangeid))*thicknes)
 		
-		quad = fixQuadForCorners(path.curve.get_closest_offset(baked_points[i]),path.curve.get_closest_offset(baked_points[i+1]),quad)
+		if drawcorners:
+			quad = fixQuadForCorners(path.curve.get_closest_offset(baked_points[i]),path.curve.get_closest_offset(baked_points[i+1]),quad)
 		
 		uv_remember_spot = wrapf(uv_remember_spot,0,1)
 		var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
@@ -238,7 +240,7 @@ func drawBorderSegmentedPoly():
 		if quad != null:
 			quad = fixQuad(quad, colors)
 		
-		if !(drawcorners and quad == null):
+		if !(drawcorners and quad == null) and quad != null:
 			draw_polygon(quad,colors,uv,texture)
 		uv_remember_spot += increase
 			
@@ -273,7 +275,6 @@ func drawBorderSegmentedPoly():
 		quad = fixQuad(quad, colors)
 		
 		draw_polygon(quad,colors,uv,texture)
-		
 
 func drawBorderSegmentedMesh():
 	var baked_points = path.curve.get_baked_points()
@@ -489,4 +490,11 @@ func setThicknes(value):
 	
 func setMarkBad(value):
 	mark_bad = value
+	update()
+
+func setStyle(value):
+	style = value
+	#bind signal
+	if !style.is_connected("changed", self, "update"):
+		style.connect("changed", self, "update")
 	update()

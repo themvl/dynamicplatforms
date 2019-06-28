@@ -1,40 +1,6 @@
 tool
 extends Resource
 
-#class anglerange:
-#	var begin:int = 0
-#	var end:int = 0
-#
-#	var textures:Array = []
-#	func _init(var b:int, var e:int):
-#		begin = b
-#		end = e
-#
-#	func addTexture(var tex:Texture):
-#		textures.push_back(tex)
-#
-#	func removeTexture(var id:int):
-#		textures.remove(id)
-#
-#	func moveTextureUp(var id:int):
-#		if id == 0:
-#			return
-#		var temp = textures[id-1]
-#		textures[id-1] = textures[id]
-#		textures[id] = temp
-#
-#	func moveTextureDown(var id:int):
-#		if id == textures.size():
-#			return
-#		var temp = textures[id+1]
-#		textures[id+1] = textures[id]
-#		textures[id] = temp
-#
-#	func getTexture(var id:int) -> Texture:
-#		return textures[id]
-#
-#	#basic much to be added
-
 export(Array, Vector2) var angleranges = []
 export(Array, Texture) var textures = []
 export(Texture) var fillTexture = null
@@ -63,12 +29,15 @@ func addAngleRange(var begin:int, var end:int):
 	angleranges.push_back(Vector2(begin, end))
 	textures.push_back([])
 	offsets.push_back(0)
+	emit_signal("changed")
 
 func addTexture(var rangeid:int, var texture:Texture):
 	textures[rangeid].push_back(texture)
+	emit_signal("changed")
 
 func removeTexture(var rangeid:int, var texid:int):
 	textures[rangeid].remove(texid)
+	emit_signal("changed")
 
 func moveTexture(var rangeid, var id:int, var direction):
 	print("about to move texture "+ str(id)+ " from range id "+ str(rangeid)+ ", " +str(direction) +" spaces")
@@ -80,6 +49,7 @@ func moveTexture(var rangeid, var id:int, var direction):
 	var temp = textures[rangeid][id+direction]
 	textures[rangeid][id+direction] = textures[rangeid][id]
 	textures[rangeid][id] = temp
+	emit_signal("changed")
 
 func getTexture(var rangeid:int, var texid:int) -> Texture:
 	return textures[rangeid][texid]
@@ -87,6 +57,7 @@ func getTexture(var rangeid:int, var texid:int) -> Texture:
 func removeAngleRange(var ranid:int):
 	angleranges.remove(ranid)
 	textures.remove(ranid)
+	emit_signal("changed")
 
 func getAngleRangeID(var angle)->int:
 	var i = 0
@@ -102,6 +73,12 @@ func getAngleRangeID(var angle)->int:
 
 func setOffset(var ranid:int, var offset):
 	offsets[ranid] = wrapf(offset, 0,1)
+	emit_signal("changed")
 	
 func getOffset(var ranid:int) -> float:
 	return offsets[ranid]
+	
+func changeAngleRange(var id, var begin, var end):
+	angleranges[id].x = begin
+	angleranges[id].x = begin
+	emit_signal("changed")
