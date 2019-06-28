@@ -2,7 +2,7 @@ tool
 extends PanelContainer
 
 #the texture that is set for this texture selector
-var texture:Texture setget setTexture
+var texture:Texture = null setget setTexture
 
 #variable that determines wheter the up and down buttons are shown this makes it easy to disable in case its used outside of the angle ranges
 export var showUpAndDown:bool = true setget setShowUpAndDown
@@ -21,7 +21,7 @@ signal textureMove(id, direction)
 #the following functions emit signals correstponding to the buttons pressed
 #and do related actions this centralises the signals to a place that a instance of thsi scene can use
 func _on_FileDialog_file_selected(path):
-	var changed = texture == null
+	var changed = !(texture == null)
 	setTexture(load(path))
 	emit_signal("textureOpened", texture, id, changed)
 

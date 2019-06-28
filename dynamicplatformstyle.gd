@@ -62,7 +62,7 @@ func _init():
 func addAngleRange(var begin:int, var end:int):
 	angleranges.push_back(Vector2(begin, end))
 	textures.push_back([])
-	offsets.pushback(0)
+	offsets.push_back(0)
 
 func addTexture(var rangeid:int, var texture:Texture):
 	textures[rangeid].push_back(texture)

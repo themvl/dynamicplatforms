@@ -2,7 +2,7 @@ tool
 extends PanelContainer
 
 const style_script = preload("../dynamicplatformstyle.gd")
-export(Resource) var style = null
+var style = null
 onready var editor = $VBoxContainer/editor
 onready var selector = $VBoxContainer/editor/Anglerangeselector
 onready var save = $VBoxContainer/newandopen/save

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dynamicplatforms/StyleEditor/StyleEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dynamicplatforms/StyleEditor/radiusrange.gd" type="Script" id=2]
-[ext_resource path="res://addons/dynamicplatforms/StyleEditor/TexturesContainer.gd" type="Script" id=3]
-[ext_resource path="res://addons/dynamicplatforms/StyleEditor/textureselector.tscn" type="PackedScene" id=4]
+[ext_resource path="res://newStyle.tres" type="Resource" id=3]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/TexturesContainer.gd" type="Script" id=4]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/textureselector.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 8.0
@@ -77,7 +78,7 @@ text = "save"
 visible = false
 margin_top = 24.0
 margin_right = 287.0
-margin_bottom = 708.0
+margin_bottom = 537.0
 
 [node name="Anglerangeslabel" type="Label" parent="StyleEditorPanel/VBoxContainer/editor"]
 margin_right = 287.0
@@ -87,25 +88,28 @@ text = "Angle ranges"
 [node name="Anglerangeselector" type="Control" parent="StyleEditorPanel/VBoxContainer/editor"]
 margin_top = 18.0
 margin_right = 287.0
-margin_bottom = 332.0
-rect_min_size = Vector2( 0, 314 )
+margin_bottom = 305.0
+rect_min_size = Vector2( 0, 287 )
 script = ExtResource( 2 )
+style = ExtResource( 3 )
+activeangle = 8
 
 [node name="selectedangle" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector"]
 margin_right = 40.0
 margin_bottom = 14.0
-text = "0"
+text = "8 : -1"
 
 [node name="createrange" type="Button" parent="StyleEditorPanel/VBoxContainer/editor"]
-margin_top = 336.0
+margin_top = 309.0
 margin_right = 287.0
-margin_bottom = 356.0
+margin_bottom = 329.0
 text = "create new range"
 
 [node name="anglerangesettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
-margin_top = 360.0
+visible = false
+margin_top = 333.0
 margin_right = 287.0
-margin_bottom = 502.0
+margin_bottom = 475.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings"]
@@ -170,7 +174,7 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 264.0
 margin_bottom = 49.0
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="Label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
 margin_right = 257.0
@@ -189,9 +193,9 @@ margin_bottom = 42.0
 text = "Add texture"
 
 [node name="Fillsettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
-margin_top = 506.0
+margin_top = 333.0
 margin_right = 287.0
-margin_bottom = 684.0
+margin_bottom = 513.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
 
@@ -199,15 +203,16 @@ custom_styles/panel = SubResource( 1 )
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 279.0
-margin_bottom = 170.0
+margin_bottom = 172.0
 
 [node name="Label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer"]
 margin_right = 271.0
 margin_bottom = 14.0
 text = "Fill settings"
 
-[node name="textureselector" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 4 )]
+[node name="textureselector" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 5 )]
 margin_right = 271.0
+margin_bottom = 164.0
 
 [node name="FileDialogNewStyle" type="FileDialog" parent="StyleEditorPanel"]
 margin_left = -16.0
