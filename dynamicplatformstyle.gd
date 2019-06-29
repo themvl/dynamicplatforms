@@ -80,5 +80,5 @@ func getOffset(var ranid:int) -> float:
 	
 func changeAngleRange(var id, var begin, var end):
 	angleranges[id].x = begin
-	angleranges[id].x = begin
+	angleranges[id].y = end
 	emit_signal("changed")

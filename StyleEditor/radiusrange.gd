@@ -50,7 +50,7 @@ func _gui_input(event):
 			selectedpoint = null
 			double_point = null
 			for point in clickablepoints:
-				if(get_local_mouse_position().distance_to(point[0]) <=5):
+				if(get_local_mouse_position().distance_to(point[0]) <=7):
 					#select this point
 					if selectedpoint != null and point[0] == selectedpoint[0]: #a double point
 						double_point = selectedpoint
@@ -61,6 +61,7 @@ func _gui_input(event):
 				if (get_local_mouse_position()-pivot).y > 0:
 					ang = 180-ang
 				activeangle = convertangle(ang)
+				selectedpoint = [Vector2(0,0),-1,0]
 			
 		else:
 			selectedpoint = null
@@ -74,9 +75,10 @@ func _gui_input(event):
 		if selectedpoint[1] == -1:
 			activeangle = convertangle(ang)
 		else:
-			changeRangeValue(selectedpoint[1],selectedpoint[2],convertangle(ang))
+			ang = convertangle(ang)
+			changeRangeValue(selectedpoint[1],selectedpoint[2],ang)
 			if double_point != null:
-				changeRangeValue(double_point[1],double_point[2],convertangle(ang))
+				changeRangeValue(double_point[1],double_point[2],ang)
 	update()
 
 #draws a arrow indicator at the given location with the given orientation scale and color
