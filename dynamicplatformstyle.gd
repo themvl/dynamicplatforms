@@ -36,7 +36,7 @@ func _init():
 func addAngleRange(var begin:int, var end:int):
 	angleranges.push_back(Vector2(begin, end))
 	textures.push_back([])
-	offsets.push_back(0)
+	offsets.push_back(0.5)
 	emit_signal("changed")
 
 func addTexture(var rangeid:int, var texture:Texture):
