@@ -63,6 +63,7 @@ func _process(delta):
 		#everytime the curve changes redraw
 		if !path.curve.is_connected("changed",self, "update"):
 			path.curve.connect("changed",self, "update")
+		update()
 	else:
 		#ensure path is set
 		path = $Path2D
