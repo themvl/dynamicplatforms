@@ -3,7 +3,7 @@ extends Node2D
 
 const style_script = preload("dynamicplatformstyle.gd")
 export(Resource) var style = null setget setStyle
-onready var path = $Path2D
+var path = null
 
 #determines wheter the curve is closed or not when it is it draws a filltexture and sets the end and start points to the same position
 export var closed:bool = true setget setClosed
@@ -21,7 +21,7 @@ export var quad_switch:bool = false setget setQuadSwitch
 #the new method segments the texture based on the bake interval of the curve
 export var segmented:bool = true #this should be a dictionary or similar with different options especially if more draw options become available
 #determines if corners are drawn this is not always desired
-export var drawcorners:bool = true setget setDrawCorners
+export var drawcorners:bool = false setget setDrawCorners
 #determines between which angles a corner will be drawn
 export var angle_treshold = Vector2(30,120) setget setAngleThreshold
 
@@ -51,18 +51,21 @@ func resetpath():
 # warning-ignore:unused_argument
 func _process(delta):
 	#create a path2d child if none exists this is absolutely neceserry and should never be deleted
-	if $Path2D == null:
-		var p = Path2D.new()
-		add_child(p)
-		p.set_owner(get_tree().get_edited_scene_root())
+	if path == null:
+		if !has_node("Path2D"):
+			var p = Path2D.new()
+			add_child(p)
+			p.set_owner(get_tree().get_edited_scene_root())
+		path = $Path2D
 		#everytime the curve changes redraw
-		path.curve.connect("changed",self, "update")
+		if !path.curve.is_connected("changed",self, "update"):
+			path.curve.connect("changed",self, "update")
 	else:
 		#ensure path is set
 		path = $Path2D
 		if !path.curve.is_connected("changed",self, "update"):
 			path.curve.connect("changed",self, "update")
-	resetpath()
+		resetpath()
 
 func drawFill():
 	#dont fill when theres less than 3 points or when closed is not enabled
@@ -95,7 +98,7 @@ func drawBorderPoly(var offset):
 	var point = path.curve.interpolate_baked(offset)
 	var normal = getNormal(offset)
 	
-# warning-ignore:narrowing_conversion
+	# warning-ignore:narrowing_conversion
 	var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 	var texture = style.getTexture(rangeid,0)
 	var factor = float(thicknes/texture.get_height())
@@ -216,38 +219,39 @@ func drawBorderSegmentedPoly():
 			normal2 = baked_points[i+2] - baked_points[i]
 		normal2 = Vector2(-normal2.y,normal2.x).normalized()
 		
-# warning-ignore:narrowing_conversion
+		# warning-ignore:narrowing_conversion
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
-		var texture = style.getTexture(rangeid,0)
-		
-		quad = PoolVector2Array()
-		quad.push_back(baked_points[i]-normal*style.getOffset(rangeid)*thicknes)
-		quad.push_back(baked_points[i+1]-normal2*style.getOffset(rangeid)*thicknes)
-		quad.push_back(baked_points[i+1]+normal2*(1-style.getOffset(rangeid))*thicknes)
-		quad.push_back(baked_points[i]+normal*(1-style.getOffset(rangeid))*thicknes)
-		
-		if drawcorners:
-			quad = fixQuadForCorners(path.curve.get_closest_offset(baked_points[i]),path.curve.get_closest_offset(baked_points[i+1]),quad)
-		
-		uv_remember_spot = wrapf(uv_remember_spot,0,1)
-		var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
-		
-		var uv = PoolVector2Array()
-		uv.push_back(Vector2(uv_remember_spot,0.01))
-		uv.push_back(Vector2(uv_remember_spot+increase,0.01))
-		uv.push_back(Vector2(uv_remember_spot+increase,0.99))
-		uv.push_back(Vector2(uv_remember_spot,0.99))
-		
-		#make bad polygons gud polygons like a doggy
-		if quad != null:
-			quad = fixQuad(quad, colors)
-		
-		if !(drawcorners and quad == null) and quad != null:
-			draw_polygon(quad,colors,uv,texture)
-		uv_remember_spot += increase
+		if rangeid != -1:
+			var texture = style.getTexture(rangeid,0)
+			
+			quad = PoolVector2Array()
+			quad.push_back(baked_points[i]-normal*style.getOffset(rangeid)*thicknes)
+			quad.push_back(baked_points[i+1]-normal2*style.getOffset(rangeid)*thicknes)
+			quad.push_back(baked_points[i+1]+normal2*(1-style.getOffset(rangeid))*thicknes)
+			quad.push_back(baked_points[i]+normal*(1-style.getOffset(rangeid))*thicknes)
+			
+			if drawcorners:
+				quad = fixQuadForCorners(path.curve.get_closest_offset(baked_points[i]),path.curve.get_closest_offset(baked_points[i+1]),quad)
+			
+			uv_remember_spot = wrapf(uv_remember_spot,0,1)
+			var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
+			
+			var uv = PoolVector2Array()
+			uv.push_back(Vector2(uv_remember_spot,0.01))
+			uv.push_back(Vector2(uv_remember_spot+increase,0.01))
+			uv.push_back(Vector2(uv_remember_spot+increase,0.99))
+			uv.push_back(Vector2(uv_remember_spot,0.99))
+			
+			#make bad polygons gud polygons like a doggy
+			if quad != null:
+				quad = fixQuad(quad, colors)
+			
+			if !(drawcorners and quad == null) and quad != null:
+				draw_polygon(quad,colors,uv,texture)
+			uv_remember_spot += increase
 			
 	#draw extra quad to join ends
-	if closed and !offsetInCornerRange(0,0):
+	if closed and path.curve.get_point_count() > 3 and (!drawcorners or !offsetInCornerRange(0,0)):
 		var normal
 		normal = baked_points[1] - baked_points[baked_points.size()-2]
 		normal = Vector2(-normal.y,normal.x).normalized()
@@ -256,28 +260,29 @@ func drawBorderSegmentedPoly():
 		normal2 = baked_points[1] - baked_points[baked_points.size()-3]
 		normal2 = Vector2(-normal2.y,normal2.x).normalized()
 		
-# warning-ignore:narrowing_conversion
+		# warning-ignore:narrowing_conversion
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
-		var texture = style.getTexture(rangeid,0)
+		if rangeid != -1:
+			var texture = style.getTexture(rangeid,0)
 		
-		quad = PoolVector2Array()
-		quad.push_back(baked_points[0]-normal2*style.getOffset(rangeid)*thicknes)
-		quad.push_back(baked_points[baked_points.size()-1]-normal*style.getOffset(rangeid)*thicknes)
-		quad.push_back(baked_points[baked_points.size()-1]+normal*(1-style.getOffset(rangeid))*thicknes)
-		quad.push_back(baked_points[0]+normal2*(1-style.getOffset(rangeid))*thicknes)
-		
-		uv_remember_spot = wrapf(uv_remember_spot,0,1)
-		var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
-		
-		var uv = PoolVector2Array()
-		uv.push_back(Vector2(uv_remember_spot,0.01))
-		uv.push_back(Vector2(uv_remember_spot+increase,0.01))
-		uv.push_back(Vector2(uv_remember_spot+increase,0.99))
-		uv.push_back(Vector2(uv_remember_spot,0.99))
-		
-		quad = fixQuad(quad, colors)
-		
-		draw_polygon(quad,colors,uv,texture)
+			quad = PoolVector2Array()
+			quad.push_back(baked_points[0]-normal2*style.getOffset(rangeid)*thicknes)
+			quad.push_back(baked_points[baked_points.size()-1]-normal*style.getOffset(rangeid)*thicknes)
+			quad.push_back(baked_points[baked_points.size()-1]+normal*(1-style.getOffset(rangeid))*thicknes)
+			quad.push_back(baked_points[0]+normal2*(1-style.getOffset(rangeid))*thicknes)
+			
+			uv_remember_spot = wrapf(uv_remember_spot,0,1)
+			var increase = path.curve.bake_interval/texture.get_width()*(texture.get_height()/thicknes)
+			
+			var uv = PoolVector2Array()
+			uv.push_back(Vector2(uv_remember_spot,0.01))
+			uv.push_back(Vector2(uv_remember_spot+increase,0.01))
+			uv.push_back(Vector2(uv_remember_spot+increase,0.99))
+			uv.push_back(Vector2(uv_remember_spot,0.99))
+			
+			quad = fixQuad(quad, colors)
+			
+			draw_polygon(quad,colors,uv,texture)
 
 func drawBorderSegmentedMesh():
 	var baked_points = path.curve.get_baked_points()
@@ -465,11 +470,14 @@ func drawBorderSegmentedCurve():
 #	curve_inner.transform = curve_inner.transform.scaled(0.5)
 	
 func _draw():
-	#this sets the end point and start point to the same position when the curve is set to closed this still allows moving the points together
-	if closed and  path.curve.get_point_count() > 3 and path.curve.get_point_position(0) != path.curve.get_point_position(path.curve.get_point_count()-1):
-		path.curve.set_point_position(path.curve.get_point_count()-1, path.curve.get_point_position(0))
-	drawFill()
-	drawBorder()
+	if path != null and style != null:
+		#this sets the end point and start point to the same position when the curve is set to closed this still allows moving the points together
+		if closed and  path.curve.get_point_count() > 3 and path.curve.get_point_position(0) != path.curve.get_point_position(path.curve.get_point_count()-1):
+			path.curve.set_point_position(path.curve.get_point_count()-1, path.curve.get_point_position(0))
+		drawFill()
+		drawBorder()
+	else:
+		update()
 
 #setters and getters with update
 func setDrawCorners(var value):
