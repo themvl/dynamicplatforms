@@ -47,6 +47,9 @@ func resetpath():
 	path.position = Vector2(0,0)
 	path.rotation = 0
 	path.scale = Vector2(1,1)
+	
+	if closed and path.curve.get_point_count() > 3 and path.curve.get_point_position(path.curve.get_point_count()-1) == path.curve.get_point_position(path.curve.get_point_count()-2):
+		path.curve.remove_point(path.curve.get_point_count()-1)
 
 # warning-ignore:unused_argument
 func _process(delta):
