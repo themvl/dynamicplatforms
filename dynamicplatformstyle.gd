@@ -4,18 +4,26 @@ extends Resource
 export(Array, Vector2) var angleranges = []
 export(Array, Texture) var textures = []
 export(Texture) var fillTexture = null
-export(Vector2) var fillsize
+export(Vector2) var fillsize setget setFillSize
 export(Array, float) var offsets
 
 #corner textures
+# warning-ignore:unused_class_variable
 export(Texture) var leftTopOuterCorner
+# warning-ignore:unused_class_variable
 export(Texture) var rightTopOuterCorner
+# warning-ignore:unused_class_variable
 export(Texture) var leftBottomOuterCorner
+# warning-ignore:unused_class_variable
 export(Texture) var rightBottomOuterCorner
 
+# warning-ignore:unused_class_variable
 export(Texture) var leftTopInnerCorner
+# warning-ignore:unused_class_variable
 export(Texture) var rightTopInnerCorner
+# warning-ignore:unused_class_variable
 export(Texture) var leftBottomInnerCorner
+# warning-ignore:unused_class_variable
 export(Texture) var rightBottomInnerCorner
 
 func _init():
@@ -81,4 +89,8 @@ func getOffset(var ranid:int) -> float:
 func changeAngleRange(var id, var begin, var end):
 	angleranges[id].x = begin
 	angleranges[id].y = end
+	emit_signal("changed")
+	
+func setFillSize(var value):
+	fillsize = value
 	emit_signal("changed")

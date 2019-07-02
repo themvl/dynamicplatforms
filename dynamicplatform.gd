@@ -48,6 +48,7 @@ func resetpath():
 	path.rotation = 0
 	path.scale = Vector2(1,1)
 
+# warning-ignore:unused_argument
 func _process(delta):
 	#create a path2d child if none exists this is absolutely neceserry and should never be deleted
 	if $Path2D == null:
@@ -94,6 +95,7 @@ func drawBorderPoly(var offset):
 	var point = path.curve.interpolate_baked(offset)
 	var normal = getNormal(offset)
 	
+# warning-ignore:narrowing_conversion
 	var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 	var texture = style.getTexture(rangeid,0)
 	var factor = float(thicknes/texture.get_height())
@@ -170,7 +172,6 @@ func fixQuadForCorners(var offset1, var offset2, var quad):
 	for i in range(corner_ranges.size()):
 		if offsetInCornerRange(offset1,i):
 			if offsetInCornerRange(offset2,i):
-				print("offset in corner range:")
 				return null
 			else:
 				drawPoint(corner_quads[i][2], Color.red)
@@ -215,6 +216,7 @@ func drawBorderSegmentedPoly():
 			normal2 = baked_points[i+2] - baked_points[i]
 		normal2 = Vector2(-normal2.y,normal2.x).normalized()
 		
+# warning-ignore:narrowing_conversion
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 		var texture = style.getTexture(rangeid,0)
 		
@@ -254,6 +256,7 @@ func drawBorderSegmentedPoly():
 		normal2 = baked_points[1] - baked_points[baked_points.size()-3]
 		normal2 = Vector2(-normal2.y,normal2.x).normalized()
 		
+# warning-ignore:narrowing_conversion
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 		var texture = style.getTexture(rangeid,0)
 		
@@ -292,6 +295,7 @@ func drawBorderSegmentedMesh():
 			normal = baked_points[i] - baked_points[i-1]
 		normal2 = Vector2(-normal2.y,normal2.x).normalized()
 		
+# warning-ignore:narrowing_conversion
 		var rangeid=style.getAngleRangeID(wrapi(rad2deg(normal.angle())-90,0,359))
 		var texture = style.getTexture(rangeid,0)
 		

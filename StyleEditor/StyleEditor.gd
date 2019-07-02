@@ -10,6 +10,9 @@ onready var save = $VBoxContainer/newandopen/save
 func loadStyle(var file):
 	style = load(file)
 	selector.setStyle(style)
+	
+	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox width".value = style.fillsize.x
+	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox height".value = style.fillsize.y
 	update()
 
 func newStyle(var file):
@@ -19,6 +22,7 @@ func newStyle(var file):
 	style.set_path(file)
 	selector.setStyle(style)
 	ResourceSaver.save(file, style)
+	
 	update()
 
 func saveStyle():
@@ -46,3 +50,10 @@ func _draw():
 
 func _on_save_pressed():
 	saveStyle()
+
+func _fill_width_changed(value):
+	style.fillsize.x = value
+
+
+func _fill_height_changed(value):
+	style.fillsize.y = value

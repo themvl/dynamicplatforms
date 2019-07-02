@@ -46,6 +46,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="newandopen" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer"]
+editor/display_folded = true
 margin_right = 287.0
 margin_bottom = 20.0
 
@@ -78,7 +79,7 @@ text = "save"
 visible = false
 margin_top = 24.0
 margin_right = 287.0
-margin_bottom = 537.0
+margin_bottom = 593.0
 
 [node name="Anglerangeslabel" type="Label" parent="StyleEditorPanel/VBoxContainer/editor"]
 margin_right = 287.0
@@ -86,6 +87,7 @@ margin_bottom = 14.0
 text = "Angle ranges"
 
 [node name="Anglerangeselector" type="Control" parent="StyleEditorPanel/VBoxContainer/editor"]
+editor/display_folded = true
 margin_top = 18.0
 margin_right = 287.0
 margin_bottom = 305.0
@@ -106,6 +108,7 @@ margin_bottom = 329.0
 text = "create new range"
 
 [node name="anglerangesettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
+editor/display_folded = true
 visible = false
 margin_top = 333.0
 margin_right = 287.0
@@ -176,10 +179,20 @@ margin_right = 264.0
 margin_bottom = 49.0
 script = ExtResource( 4 )
 
-[node name="Label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
 margin_right = 257.0
 margin_bottom = 14.0
 text = "Textures:"
+
+[node name="showhidebutton" type="Button" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 20.0
+toggle_mode = true
+text = "Hide"
 
 [node name="textureselectors" type="VBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"]
 margin_top = 18.0
@@ -195,7 +208,7 @@ text = "Add texture"
 [node name="Fillsettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
 margin_top = 333.0
 margin_right = 287.0
-margin_bottom = 513.0
+margin_bottom = 569.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
 
@@ -203,7 +216,7 @@ custom_styles/panel = SubResource( 1 )
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 279.0
-margin_bottom = 172.0
+margin_bottom = 228.0
 
 [node name="Label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer"]
 margin_right = 271.0
@@ -213,6 +226,39 @@ text = "Fill settings"
 [node name="textureselector" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 5 )]
 margin_right = 271.0
 margin_bottom = 164.0
+showUpAndDown = false
+
+[node name="size settings" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer"]
+margin_top = 168.0
+margin_right = 271.0
+margin_bottom = 192.0
+
+[node name="Label width" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings"]
+margin_top = 5.0
+margin_right = 43.0
+margin_bottom = 19.0
+text = "width: "
+
+[node name="SpinBox width" type="SpinBox" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings"]
+margin_left = 47.0
+margin_right = 121.0
+margin_bottom = 24.0
+value = 1.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Label height" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings"]
+margin_top = 33.0
+margin_right = 44.0
+margin_bottom = 47.0
+text = "height:"
+
+[node name="SpinBox height" type="SpinBox" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings"]
+margin_left = 48.0
+margin_top = 28.0
+margin_right = 122.0
+margin_bottom = 52.0
+value = 1.0
 
 [node name="FileDialogNewStyle" type="FileDialog" parent="StyleEditorPanel"]
 margin_left = -16.0
@@ -232,8 +278,11 @@ mode = 0
 [connection signal="value_changed" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer/SpinBox" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="_on_SpinBox_value_changed" binds= [ false ]]
 [connection signal="value_changed" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/HBoxContainer/SpinBox2" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="_on_SpinBox2_value_changed"]
 [connection signal="pressed" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/delete" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="deleteactiverange"]
+[connection signal="toggled" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer/HBoxContainer/showhidebutton" to="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer" method="_on_showhidebutton_toggled"]
 [connection signal="pressed" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer/Button" to="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer" method="_on_Button_pressed"]
 [connection signal="textureOpened" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/textureselector" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="_on_textureselector_textureOpened"]
 [connection signal="textureRemoved" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/textureselector" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="_on_textureselector_textureRemoved"]
+[connection signal="value_changed" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox width" to="StyleEditorPanel" method="_fill_width_changed"]
+[connection signal="value_changed" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox height" to="StyleEditorPanel" method="_fill_height_changed"]
 [connection signal="file_selected" from="StyleEditorPanel/FileDialogNewStyle" to="StyleEditorPanel" method="_on_FileDialogNewStyle_file_selected"]
 [connection signal="file_selected" from="StyleEditorPanel/FileDialogLoadStyle" to="StyleEditorPanel" method="_on_FileDialogLoadStyle_file_selected"]

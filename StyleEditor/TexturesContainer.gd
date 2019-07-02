@@ -25,3 +25,7 @@ func addNewTexturePanel( var texture = null):
 #	if texturecount == 0:
 #		texture = texture
 	texturecount +=1
+
+func _on_showhidebutton_toggled(button_pressed):
+	$textureselectors.visible = !button_pressed
+	$Button.visible = !button_pressed
