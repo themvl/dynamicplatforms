@@ -9,16 +9,16 @@ export(Array, float) var offsets
 
 #corner textures
 # warning-ignore:unused_class_variable
-export(Texture) var leftTopOuterCorner
+export(Texture) var leftTopOuterCorner setget setLeftTopOuterCorner
 # warning-ignore:unused_class_variable
-export(Texture) var rightTopOuterCorner
+export(Texture) var rightTopOuterCorner setget setRightTopOuterCorner
 # warning-ignore:unused_class_variable
-export(Texture) var leftBottomOuterCorner
+export(Texture) var leftBottomOuterCorner setget setLeftBottomOuterCorner
 # warning-ignore:unused_class_variable
-export(Texture) var rightBottomOuterCorner
+export(Texture) var rightBottomOuterCorner setget setRightBottomOuterCorner
 
 # warning-ignore:unused_class_variable
-export(Texture) var leftTopInnerCorner
+export(Texture) var leftTopInnerCorner 
 # warning-ignore:unused_class_variable
 export(Texture) var rightTopInnerCorner
 # warning-ignore:unused_class_variable
@@ -93,4 +93,20 @@ func changeAngleRange(var id, var begin, var end):
 	
 func setFillSize(var value):
 	fillsize = value
+	emit_signal("changed")
+	
+func setLeftTopOuterCorner(var value):
+	leftTopOuterCorner = value
+	emit_signal("changed")
+	
+func setRightTopOuterCorner(var value):
+	rightTopOuterCorner = value
+	emit_signal("changed")
+	
+func setLeftBottomOuterCorner(var value):
+	leftBottomOuterCorner = value
+	emit_signal("changed")
+	
+func setRightBottomOuterCorner(var value):
+	rightBottomOuterCorner = value
 	emit_signal("changed")

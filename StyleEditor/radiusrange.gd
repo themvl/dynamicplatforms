@@ -6,7 +6,7 @@ var pivot:Vector2 = Vector2(rect_size.x/2,rect_size.x/2)
 var anglerange:Array = []
 var clickablepoints:Array 
 var selectedpoint = null
-export var activeangle = 0 setget setActiveAngle
+export var activeangle:float = 0 setget setActiveAngle
 var activerange = -1
 onready var settings = $"../anglerangesettings"
 onready var spinbox1 = $"../anglerangesettings/VBoxContainer/HBoxContainer/SpinBox"
@@ -333,8 +333,8 @@ func _on_texture_moved(var id, var direction):
 
 func updateSettings():
 	#clear and readd necesarry panels
-	var container = $"../anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer"
-	var texsel = $"../anglerangesettings/VBoxContainer/PanelContainer2/VBoxContainer/textureselectors"
+	var container = $"../anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer"
+	var texsel = $"../anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer/textureselectors"
 	for i in range(0, texsel.get_child_count()):
 		texsel.get_child(i).queue_free()
 		
@@ -350,7 +350,6 @@ func updateSettings():
 
 func _on_textureselector_textureOpened(texture, id, changed):
 	style.fillTexture = texture
-
 
 func _on_textureselector_textureRemoved(id):
 	style.fillTexture = null

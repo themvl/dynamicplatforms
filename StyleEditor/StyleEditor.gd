@@ -13,6 +13,11 @@ func loadStyle(var file):
 	
 	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox width".value = style.fillsize.x
 	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox height".value = style.fillsize.y
+	
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftuppercorner_tex".setTexture(style.leftTopOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightuppercorner_tex".setTexture(style.rightTopOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftbottomcorner_tex".setTexture(style.leftBottomOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightbottomcorner_tex".setTexture(style.rightBottomOuterCorner)
 	update()
 
 func newStyle(var file):
@@ -54,6 +59,29 @@ func _on_save_pressed():
 func _fill_width_changed(value):
 	style.fillsize.x = value
 
-
 func _fill_height_changed(value):
 	style.fillsize.y = value
+
+func _on_leftuppercorner_tex_textureOpened(texture, id, changed):
+	style.leftTopOuterCorner = texture
+
+func _on_leftuppercorner_tex_textureRemoved(id):
+	style.leftTopOuterCorner = null
+
+func _on_rightuppercorner_tex_textureOpened(texture, id, changed):
+	style.rightTopOuterCorner = texture
+
+func _on_rightuppercorner_tex_textureRemoved(id):
+	style.rightTopOuterCorner = null
+
+func _on_leftbottomcorner_tex_textureOpened(texture, id, changed):
+	style.leftBottomOuterCorner = texture
+
+func _on_leftbottomcorner_tex_textureRemoved(id):
+	style.leftBottomOuterCorner = null
+
+func _on_rightbottomcorner_tex_textureOpened(texture, id, changed):
+	style.rightBottomOuterCorner = texture
+
+func _on_rightbottomcorner_tex_textureRemoved(id):
+	style.rightBottomOuterCorner = null
