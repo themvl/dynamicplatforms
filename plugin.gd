@@ -9,7 +9,6 @@ func _enter_tree():
 	dock = preload("StyleEditor/StyleEditor.tscn").instance()
 	add_control_to_dock(DOCK_SLOT_RIGHT_UL, dock)
 
-
 func _exit_tree():
     # Clean-up of the plugin goes here
     # Always remember to remove it from the engine when deactivated
