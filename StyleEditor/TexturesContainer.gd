@@ -1,7 +1,7 @@
 tool
 extends VBoxContainer
 
-var textureselectorscene = load("res://addons/dynamicplatforms/StyleEditor/textureselector.tscn")
+var textureselectorscene = load("StyleEditor/textureselector.tscn")
 onready var textureselectors = $textureselectors
 var texturecount = 0
 #var texture:Texture = null

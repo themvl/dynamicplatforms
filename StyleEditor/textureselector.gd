@@ -46,4 +46,4 @@ func setTexture(var tex:Texture):
 		textureRect.texture = tex
 	else:
 		#set to default raster tex
-		textureRect.texture = load("res://addons/dynamicplatforms/textures-icons/raster_back.png")
+		textureRect.texture = load("textures-icons/raster_back.png")
