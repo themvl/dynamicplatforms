@@ -1,5 +1,5 @@
 tool
-extends Node2D
+extends StaticBody2D
 
 const style_script = preload("dynamicplatformstyle.gd")
 export(Resource) var style = null setget setStyle
@@ -25,10 +25,19 @@ export var drawcorners:bool = false setget setDrawCorners
 #determines between which angles a corner will be drawn
 export var angle_treshold = Vector2(30,120) setget setAngleThreshold
 
+#corner variables
 var corner_quads = []
 var corner_uvs = []
 export var corner_ranges = []
 var corner_tex = []
+
+var collisionshape = null
+
+#collisionshape settings
+export var update_collisionshape = true setget setUpdateCollisionshape
+export var max_divisions = 5 setget setMaxDivisions
+export var tolerance_degrees = 4 setget setToleranceDegrees
+export var collision_offset = 0.5 setget setCollisionOffset
 
 class_name dynamicplatform
 
@@ -69,6 +78,19 @@ func _process(delta):
 		path = $Path2D
 		if !path.curve.is_connected("changed",self, "update"):
 			path.curve.connect("changed",self, "update")
+		resetpath()
+	
+	if collisionshape == null:
+		if !has_node("CollisionPolygon2D"):
+			var p = CollisionPolygon2D.new()
+			add_child(p)
+			p.set_owner(get_tree().get_edited_scene_root())
+		collisionshape = $CollisionPolygon2D
+		collisionshape.visible = false
+		update()
+	else:
+		#ensure collisionshape is set
+		collisionshape = $CollisionPolygon2D
 		resetpath()
 
 func drawFill():
@@ -480,6 +502,9 @@ func _draw():
 			path.curve.set_point_position(path.curve.get_point_count()-1, path.curve.get_point_position(0))
 		drawFill()
 		drawBorder()
+		
+		if update_collisionshape:
+			updateCollisionShape()
 	else:
 		update()
 
@@ -514,3 +539,51 @@ func setStyle(value):
 	if !style.is_connected("changed", self, "update"):
 		style.connect("changed", self, "update")
 	update()
+
+func updateCollisionShape():
+	if path == null:
+		return
+	
+	var shape = path.curve.tessellate(max_divisions,tolerance_degrees)
+	shape.remove(shape.size()-1)
+	for i in range(shape.size()):
+		var changed = false
+		#check if corner
+		for ran in range(corner_ranges.size()):
+			if offsetInCornerRange(path.curve.get_closest_offset(shape[i]), ran):
+				print("in corner range point:" + str(shape[i]))
+				#is it a point?
+				var point = path.curve.get_closest_point(shape[i])
+				print("if:")
+				print("point == shape[i]" + str(point) + " == " +str(shape[i]) )
+				if (point-shape[i]) < Vector2(3,3) and (point-shape[i]) > Vector2(-3,-3):
+					print("is corner:" + str(shape[i]))
+					#it is in fact a corner do corner shit
+					if drawcorners:
+						shape[i] = shape[i].linear_interpolate(corner_quads[ran][0], collision_offset*2)
+					else:
+						#get some offset maybe? interpolation should be implemented properly for this.
+						shape[i] = shape[i].linear_interpolate(corner_quads[ran][0], collision_offset*2-0.2)
+					changed = true
+		if !changed:
+			var normal = getNormal(path.curve.get_closest_offset(shape[i]))
+			#update for offsets
+			shape[i] = shape[i]-normal*thicknes*collision_offset
+		
+	collisionshape.polygon = shape
+	
+func setMaxDivisions(var value):
+	max_divisions = value
+	updateCollisionShape()
+
+func setToleranceDegrees(var value):
+	tolerance_degrees = value
+	updateCollisionShape()
+
+func setCollisionOffset(var value):
+	collision_offset = value
+	updateCollisionShape()
+	
+func setUpdateCollisionshape(var value):
+	update_collisionshape = value
+	updateCollisionShape()
