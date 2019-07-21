@@ -1,7 +1,7 @@
 tool
 extends Control
 
-export(Resource) var style = null
+var style = null
 var pivot:Vector2 = Vector2(rect_size.x/2,rect_size.x/2)
 var anglerange:Array = []
 var clickablepoints:Array 
