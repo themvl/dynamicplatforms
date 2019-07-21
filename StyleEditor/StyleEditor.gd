@@ -10,10 +10,10 @@ onready var save = $VBoxContainer/newandopen/save
 func loadStyle(var file):
 	style = load(file)
 	selector.setStyle(style)
-	
+
 	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox width".value = style.fillsize.x
 	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox height".value = style.fillsize.y
-	
+
 	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftuppercorner_tex".setTexture(style.leftTopOuterCorner)
 	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightuppercorner_tex".setTexture(style.rightTopOuterCorner)
 	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftbottomcorner_tex".setTexture(style.leftBottomOuterCorner)
@@ -27,7 +27,7 @@ func newStyle(var file):
 	style.set_path(file)
 	selector.setStyle(style)
 	ResourceSaver.save(file, style)
-	
+
 	update()
 
 func saveStyle():
