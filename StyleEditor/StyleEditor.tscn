@@ -1,12 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dynamicplatforms/StyleEditor/StyleEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dynamicplatforms/StyleEditor/radiusrange.gd" type="Script" id=2]
-[ext_resource path="res://newStyle.tres" type="Resource" id=3]
-[ext_resource path="res://addons/dynamicplatforms/StyleEditor/TexturesContainer.gd" type="Script" id=4]
-[ext_resource path="res://addons/dynamicplatforms/StyleEditor/textureselector.tscn" type="PackedScene" id=5]
-[ext_resource path="res://addons/dynamicplatforms/StyleEditor/styleboxdynamicplatforms.tres" type="StyleBox" id=6]
-[ext_resource path="res://addons/dynamicplatforms/StyleEditor/VBoxContainer.gd" type="Script" id=7]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/TexturesContainer.gd" type="Script" id=3]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/textureselector.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/styleboxdynamicplatforms.tres" type="StyleBox" id=5]
+[ext_resource path="res://addons/dynamicplatforms/StyleEditor/VBoxContainer.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 8.0
@@ -95,7 +94,6 @@ margin_right = 287.0
 margin_bottom = 305.0
 rect_min_size = Vector2( 0, 287 )
 script = ExtResource( 2 )
-style = ExtResource( 3 )
 activeangle = 1.0
 
 [node name="selectedangle" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector"]
@@ -179,7 +177,7 @@ margin_left = 7.0
 margin_top = 7.0
 margin_right = 264.0
 margin_bottom = 49.0
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer"]
 editor/display_folded = true
@@ -227,7 +225,7 @@ margin_right = 271.0
 margin_bottom = 14.0
 text = "Fill settings"
 
-[node name="textureselector" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 5 )]
+[node name="textureselector" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 4 )]
 margin_right = 271.0
 margin_bottom = 164.0
 showUpAndDown = false
@@ -267,12 +265,12 @@ value = 1.0
 [node name="Cornersettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
 margin_right = 14.0
 margin_bottom = 14.0
-custom_styles/panel = ExtResource( 6 )
+custom_styles/panel = ExtResource( 5 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings"]
 margin_right = 40.0
 margin_bottom = 40.0
-script = ExtResource( 7 )
+script = ExtResource( 6 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer"]
 margin_right = 40.0
@@ -298,7 +296,7 @@ margin_right = 114.0
 margin_bottom = 14.0
 text = "Left upper corner:"
 
-[node name="leftuppercorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="leftuppercorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
 showUpAndDown = false
 
 [node name="rightuppercorner_label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer"]
@@ -306,7 +304,7 @@ margin_right = 119.0
 margin_bottom = 14.0
 text = "right upper corner:"
 
-[node name="rightuppercorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="rightuppercorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
 showUpAndDown = false
 
 [node name="leftbottomcorner_label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer"]
@@ -314,7 +312,7 @@ margin_right = 114.0
 margin_bottom = 14.0
 text = "Left lower corner:"
 
-[node name="leftbottomcorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="leftbottomcorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
 showUpAndDown = false
 
 [node name="rightbottomcorner_label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer"]
@@ -322,7 +320,7 @@ margin_right = 119.0
 margin_bottom = 14.0
 text = "right lower corner:"
 
-[node name="rightbottomcorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 5 )]
+[node name="rightbottomcorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
 showUpAndDown = false
 
 [node name="FileDialogNewStyle" type="FileDialog" parent="StyleEditorPanel"]
