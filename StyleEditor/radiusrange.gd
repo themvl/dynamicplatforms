@@ -299,7 +299,7 @@ func setStyle(var s):
 		anglerange.push_back(Vector2(ran.x,ran.y))
 	
 	#set the fill texture 
-	$"../Fillsettings/VBoxContainer/textureselector".setTexture(style.fillTexture)
+	$"../Fillsettings/VBoxContainer/textureselector".set_texture(style.fillTexture)
 	
 	update()
 	

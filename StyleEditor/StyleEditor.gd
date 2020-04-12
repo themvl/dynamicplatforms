@@ -14,10 +14,10 @@ func loadStyle(var file):
 	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox width".value = style.fillsize.x
 	$"VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox height".value = style.fillsize.y
 
-	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftuppercorner_tex".setTexture(style.leftTopOuterCorner)
-	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightuppercorner_tex".setTexture(style.rightTopOuterCorner)
-	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftbottomcorner_tex".setTexture(style.leftBottomOuterCorner)
-	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightbottomcorner_tex".setTexture(style.rightBottomOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftuppercorner_tex".set_texture(style.leftTopOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightuppercorner_tex".set_texture(style.rightTopOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftbottomcorner_tex".set_texture(style.leftBottomOuterCorner)
+	$"VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightbottomcorner_tex".set_texture(style.rightBottomOuterCorner)
 	update()
 
 func newStyle(var file):

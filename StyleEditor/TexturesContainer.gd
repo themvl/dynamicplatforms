@@ -15,12 +15,12 @@ func _on_Button_pressed():
 func addNewTexturePanel( var texture = null):
 	var instance = textureselectorscene.instance()
 	instance.set_name("textureselector")
-	instance.connect("textureOpened", $"../../../../Anglerangeselector", "_on_texture_loaded")
-	instance.connect("textureRemoved", $"../../../../Anglerangeselector", "_on_texture_removed")
-	instance.connect("textureMove", $"../../../../Anglerangeselector", "_on_texture_moved")
+	instance.connect("texture_opened", $"../../../../Anglerangeselector", "_on_texture_loaded")
+	instance.connect("texture_removed", $"../../../../Anglerangeselector", "_on_texture_removed")
+	instance.connect("texture_moved", $"../../../../Anglerangeselector", "_on_texture_moved")
 	textureselectors.add_child(instance)
 	
-	instance.setTexture(texture)
+	instance.set_texture(texture)
 	instance.id = texturecount
 #	if texturecount == 0:
 #		texture = texture

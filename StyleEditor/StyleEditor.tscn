@@ -47,7 +47,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="newandopen" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer"]
-editor/display_folded = true
 margin_right = 287.0
 margin_bottom = 20.0
 
@@ -88,7 +87,6 @@ margin_bottom = 14.0
 text = "Angle ranges"
 
 [node name="Anglerangeselector" type="Control" parent="StyleEditorPanel/VBoxContainer/editor"]
-editor/display_folded = true
 margin_top = 18.0
 margin_right = 287.0
 margin_bottom = 305.0
@@ -108,7 +106,6 @@ margin_bottom = 329.0
 text = "create new range"
 
 [node name="anglerangesettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
-editor/display_folded = true
 visible = false
 margin_top = 333.0
 margin_right = 287.0
@@ -127,7 +124,6 @@ margin_bottom = 14.0
 text = "Angle range settings"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer"]
-editor/display_folded = true
 margin_top = 18.0
 margin_right = 271.0
 margin_bottom = 42.0
@@ -180,7 +176,6 @@ margin_bottom = 49.0
 script = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer"]
-editor/display_folded = true
 margin_right = 40.0
 margin_bottom = 40.0
 
@@ -207,7 +202,6 @@ margin_bottom = 42.0
 text = "Add texture"
 
 [node name="Fillsettings" type="PanelContainer" parent="StyleEditorPanel/VBoxContainer/editor"]
-editor/display_folded = true
 margin_top = 333.0
 margin_right = 287.0
 margin_bottom = 569.0
@@ -228,7 +222,6 @@ text = "Fill settings"
 [node name="textureselector" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer" instance=ExtResource( 4 )]
 margin_right = 271.0
 margin_bottom = 164.0
-showUpAndDown = false
 
 [node name="size settings" type="HBoxContainer" parent="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer"]
 margin_top = 168.0
@@ -297,7 +290,6 @@ margin_bottom = 14.0
 text = "Left upper corner:"
 
 [node name="leftuppercorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
-showUpAndDown = false
 
 [node name="rightuppercorner_label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer"]
 margin_right = 119.0
@@ -305,7 +297,6 @@ margin_bottom = 14.0
 text = "right upper corner:"
 
 [node name="rightuppercorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
-showUpAndDown = false
 
 [node name="leftbottomcorner_label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer"]
 margin_right = 114.0
@@ -313,7 +304,6 @@ margin_bottom = 14.0
 text = "Left lower corner:"
 
 [node name="leftbottomcorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
-showUpAndDown = false
 
 [node name="rightbottomcorner_label" type="Label" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer"]
 margin_right = 119.0
@@ -321,7 +311,6 @@ margin_bottom = 14.0
 text = "right lower corner:"
 
 [node name="rightbottomcorner_tex" parent="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer" instance=ExtResource( 4 )]
-showUpAndDown = false
 
 [node name="FileDialogNewStyle" type="FileDialog" parent="StyleEditorPanel"]
 margin_left = -16.0
@@ -343,18 +332,8 @@ mode = 0
 [connection signal="pressed" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/delete" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="deleteactiverange"]
 [connection signal="toggled" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer/HBoxContainer/showhidebutton" to="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer" method="_on_showhidebutton_toggled"]
 [connection signal="pressed" from="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer/Button" to="StyleEditorPanel/VBoxContainer/editor/anglerangesettings/VBoxContainer/PanelContainer2/texturecontainer" method="_on_Button_pressed"]
-[connection signal="textureOpened" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/textureselector" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="_on_textureselector_textureOpened"]
-[connection signal="textureRemoved" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/textureselector" to="StyleEditorPanel/VBoxContainer/editor/Anglerangeselector" method="_on_textureselector_textureRemoved"]
 [connection signal="value_changed" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox width" to="StyleEditorPanel" method="_fill_width_changed"]
 [connection signal="value_changed" from="StyleEditorPanel/VBoxContainer/editor/Fillsettings/VBoxContainer/size settings/SpinBox height" to="StyleEditorPanel" method="_fill_height_changed"]
 [connection signal="toggled" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/HBoxContainer/Showhide" to="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer" method="_on_Showhide_toggled"]
-[connection signal="textureOpened" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftuppercorner_tex" to="StyleEditorPanel" method="_on_leftuppercorner_tex_textureOpened"]
-[connection signal="textureRemoved" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftuppercorner_tex" to="StyleEditorPanel" method="_on_leftuppercorner_tex_textureRemoved"]
-[connection signal="textureOpened" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightuppercorner_tex" to="StyleEditorPanel" method="_on_rightuppercorner_tex_textureOpened"]
-[connection signal="textureRemoved" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightuppercorner_tex" to="StyleEditorPanel" method="_on_rightuppercorner_tex_textureRemoved"]
-[connection signal="textureOpened" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftbottomcorner_tex" to="StyleEditorPanel" method="_on_leftbottomcorner_tex_textureOpened"]
-[connection signal="textureRemoved" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/leftbottomcorner_tex" to="StyleEditorPanel" method="_on_leftbottomcorner_tex_textureRemoved"]
-[connection signal="textureOpened" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightbottomcorner_tex" to="StyleEditorPanel" method="_on_rightbottomcorner_tex_textureOpened"]
-[connection signal="textureRemoved" from="StyleEditorPanel/VBoxContainer/editor/Cornersettings/VBoxContainer/VBoxContainer/rightbottomcorner_tex" to="StyleEditorPanel" method="_on_rightbottomcorner_tex_textureRemoved"]
 [connection signal="file_selected" from="StyleEditorPanel/FileDialogNewStyle" to="StyleEditorPanel" method="_on_FileDialogNewStyle_file_selected"]
 [connection signal="file_selected" from="StyleEditorPanel/FileDialogLoadStyle" to="StyleEditorPanel" method="_on_FileDialogLoadStyle_file_selected"]
