@@ -476,8 +476,7 @@ func drawCorners():
 			draw_polygon(corner_quads[i],colors,corner_uvs[i],tex)
 
 func drawBorder():
-	if drawcorners:
-		determineCorners()
+	determineCorners()
 	
 	if !segmented:
 		drawBorderPoly(0)
@@ -562,12 +561,12 @@ func updateCollisionShape():
 					if drawcorners:
 						shape[i] = shape[i].linear_interpolate(corner_quads[ran][0], collision_offset*2)
 					else:
-						#get some offset maybe? interpolation should be implemented properly for this.
+						# todo get some offset maybe? interpolation should be implemented properly for this.
 						shape[i] = shape[i].linear_interpolate(corner_quads[ran][0], collision_offset*2-0.2)
 					changed = true
 		if !changed:
 			var normal = getNormal(path.curve.get_closest_offset(shape[i]))
-			#update for offsets
+			# update for offsets
 			shape[i] = shape[i]-normal*thicknes*collision_offset
 		
 	collisionshape.polygon = shape
