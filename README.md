@@ -9,7 +9,7 @@ A plugin for the godot game engine. It creates platforms using curves using pred
 just clone the repository in the addons folder in your project (if you dont have the folder create it) make sure the folder name is dynamicplatforms otherwise some dependency errors occur (godot does no longer support relative dependency paths for scenes) then go to project settings-> plugins and change status to active. 
 
 ## Explanation/tutorial in progress
-There are 2 parts to this plugin. The *tyle editor* and the *dynamicplatform node*. Platforms use styles to define how they look.
+There are 2 parts to this plugin. The *style editor* and the *dynamicplatform node*. Platforms use styles to define how they look.
 
 ### Alternatives and similar plugins
 
