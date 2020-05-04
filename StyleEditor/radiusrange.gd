@@ -313,23 +313,7 @@ func changeRangeValue(var ranid:int, var begorend:int, var newValue:int):
 	
 	update()
 
-func _on_texture_loaded(var tex,var id, var changed:bool):
-	if(id == 0):
-		texture = tex
-	
-	if !changed:
-		style.addTexture(activerange, tex)
-	else:
-		style.textures[activerange][id] = tex
-	update()
 
-func _on_texture_removed(var id):
-	style.removeTexture(activerange,id)
-	updateSettings()
-	
-func _on_texture_moved(var id, var direction):
-	style.moveTexture(activerange, id, direction)
-	updateSettings()
 
 func updateSettings():
 	#clear and readd necesarry panels
@@ -348,12 +332,31 @@ func updateSettings():
 			#add a new panel
 			container.addNewTexturePanel(tex)
 
-func _on_textureselector_textureOpened(texture, id, changed):
-	style.fillTexture = texture
-
-func _on_textureselector_textureRemoved(id):
-	style.fillTexture = null
-
 func setActiveAngle(value):
 	activeangle = value
 	update()
+
+# signals
+func _on_textureselector_texture_opened(texture, id, changed):
+	style.fillTexture = texture
+
+func _on_textureselector_texture_removed(id):
+	style.fillTexture = null
+	
+func _on_texture_loaded(var tex,var id, var changed:bool):
+	if(id == 0):
+		texture = tex
+	
+	if !changed:
+		style.addTexture(activerange, tex)
+	else:
+		style.textures[activerange][id] = tex
+	update()
+
+func _on_texture_removed(var id):
+	style.removeTexture(activerange,id)
+	updateSettings()
+	
+func _on_texture_moved(var id, var direction):
+	style.moveTexture(activerange, id, direction)
+	updateSettings()

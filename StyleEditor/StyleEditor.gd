@@ -85,3 +85,11 @@ func _on_rightbottomcorner_tex_textureOpened(texture, id, changed):
 
 func _on_rightbottomcorner_tex_textureRemoved(id):
 	style.rightBottomOuterCorner = null
+
+
+func _on_leftuppercorner_tex_texture_opened(texture, id, changed):
+	style.leftTopOuterCorner = texture
+
+
+func _on_rightuppercorner_tex_texture_opened(texture, id, changed):
+	style.rightUpperCorner = texture

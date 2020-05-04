@@ -92,6 +92,10 @@ func _process(delta):
 		#ensure collisionshape is set
 		collisionshape = $CollisionPolygon2D
 		resetpath()
+		
+	# always redraw when in editor to reflect style changes
+	if Engine.is_editor_hint():
+		update()
 
 func drawFill():
 	#dont fill when theres less than 3 points or when closed is not enabled
