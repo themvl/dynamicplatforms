@@ -62,34 +62,26 @@ func _fill_width_changed(value):
 func _fill_height_changed(value):
 	style.fillsize.y = value
 
-func _on_leftuppercorner_tex_textureOpened(texture, id, changed):
-	style.leftTopOuterCorner = texture
-
-func _on_leftuppercorner_tex_textureRemoved(id):
-	style.leftTopOuterCorner = null
-
-func _on_rightuppercorner_tex_textureOpened(texture, id, changed):
-	style.rightTopOuterCorner = texture
-
-func _on_rightuppercorner_tex_textureRemoved(id):
-	style.rightTopOuterCorner = null
-
-func _on_leftbottomcorner_tex_textureOpened(texture, id, changed):
-	style.leftBottomOuterCorner = texture
-
-func _on_leftbottomcorner_tex_textureRemoved(id):
-	style.leftBottomOuterCorner = null
-
-func _on_rightbottomcorner_tex_textureOpened(texture, id, changed):
-	style.rightBottomOuterCorner = texture
-
-func _on_rightbottomcorner_tex_textureRemoved(id):
-	style.rightBottomOuterCorner = null
-
-
 func _on_leftuppercorner_tex_texture_opened(texture, id, changed):
 	style.leftTopOuterCorner = texture
 
+func _on_leftuppercorner_tex_texture_removed(id):
+	style.leftTopOuterCorner = null
 
 func _on_rightuppercorner_tex_texture_opened(texture, id, changed):
 	style.rightUpperCorner = texture
+
+func _on_rightuppercorner_tex_texture_removed(id):
+	style.rightUpperCorner = null
+
+func _on_leftbottomcorner_tex_texture_opened(texture, id, changed):
+	style.leftBottomCorner = texture
+
+func _on_leftbottomcorner_tex_texture_removed(id):
+	style.leftBottomCorner = null
+
+func _on_rightbottomcorner_tex_texture_opened(texture, id, changed):
+	style.rightBottomOuterCorner = texture
+
+func _on_rightbottomcorner_tex_texture_removed(id):
+	style.rightBottomOuterCorner = null
