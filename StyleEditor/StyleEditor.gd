@@ -70,7 +70,6 @@ func _on_leftuppercorner_tex_texture_removed(id):
 
 func _on_rightuppercorner_tex_texture_opened(texture, id, changed):
 	style.rightTopOuterCorner = texture
-	print("right upper corner changed texture")
 
 func _on_rightuppercorner_tex_texture_removed(id):
 	style.rightTopOuterCorner = null
