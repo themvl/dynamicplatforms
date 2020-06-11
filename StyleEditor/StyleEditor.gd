@@ -69,16 +69,17 @@ func _on_leftuppercorner_tex_texture_removed(id):
 	style.leftTopOuterCorner = null
 
 func _on_rightuppercorner_tex_texture_opened(texture, id, changed):
-	style.rightUpperCorner = texture
+	style.rightTopOuterCorner = texture
+	print("right upper corner changed texture")
 
 func _on_rightuppercorner_tex_texture_removed(id):
-	style.rightUpperCorner = null
+	style.rightTopOuterCorner = null
 
 func _on_leftbottomcorner_tex_texture_opened(texture, id, changed):
-	style.leftBottomCorner = texture
+	style.leftBottomOuterCorner = texture
 
 func _on_leftbottomcorner_tex_texture_removed(id):
-	style.leftBottomCorner = null
+	style.leftBottomOuterCorner = null
 
 func _on_rightbottomcorner_tex_texture_opened(texture, id, changed):
 	style.rightBottomOuterCorner = texture
